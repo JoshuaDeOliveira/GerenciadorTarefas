@@ -1,6 +1,6 @@
 ## GerenciadorTarefas
 
-Pequeno projeto de um Gerenciador de Tarefas
+Pequeno projeto de um Gerenciador de Tarefas para estudo de fullstack
 
 ## Tecnologias 
 
