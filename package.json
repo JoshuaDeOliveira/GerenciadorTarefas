@@ -1,6 +1,26 @@
 {
+  "name": "gerenciador_de_tarefas",
+  "version": "1.0.0",
+  "description": "Pequeno projeto de um Gerenciador de Tarefas para estudo de fullstack",
+  "homepage": "https://github.com/JoshuaDeOliveira/GerenciadorTarefas#readme",
+  "bugs": {
+    "url": "https://github.com/JoshuaDeOliveira/GerenciadorTarefas/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshuaDeOliveira/GerenciadorTarefas.git"
+  },
+  "license": "ISC",
+  "author": "Joshua Erbe",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mysql": "^2.18.1"
-  }
+    "mysql2": "^3.22.5"
+  },
+  "devDependencies": {}
 }
