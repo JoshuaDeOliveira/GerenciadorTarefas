@@ -2,9 +2,10 @@ import express from 'express';
 import poolconnect from '../connect.js'
 
 const tasks_routes = express.Router()
-var results = {}
 
-tasks_routes.get('/tasks', async function (req, res) {
+tasks_routes.get('/Tasks', async function (req, res) {
+    let results = {}
+
     try {
         [results] = await poolconnect.execute(
             `SELECT * FROM tasks`
@@ -13,15 +14,17 @@ tasks_routes.get('/tasks', async function (req, res) {
         res.status(200).json(results)
     } catch (error){
         results = {
-            message: `Foi encontrado esse erro ${error}`,
+            message: `Foi encontrado esse erro ${error.message}`,
             code: 500
         }
 
-        res.status(results.code).send(results)
+        res.status(results.code).json(results)
     }
 })
 
-tasks_routes.post('/SendTask', async function (req, res) {
+tasks_routes.post('/RegisterTask', async function (req, res) {
+    let results = {}
+
     try {
         const emailuser = req.query.email_user
         const taskname = req.body.task_name
@@ -50,40 +53,64 @@ tasks_routes.post('/SendTask', async function (req, res) {
         }
     } catch (error) {
         results = {
-            message: `Esse foi o erro encontrado: ${error}`,
+            message: "Foi encontrado um erro ao registrar a tarefa",
             code: 500
         }
+
+        console.log(`Esse foi o erro encontrado: ${error}`)
     }
 
-    res.status(results.code).send(results)
+    res.status(results.code).json(results)
 })
 
 tasks_routes.put('/UpdateTask', async function (req, res) {
+    let results = {}
+
     try {
         const idtask = req.query.id_task
-        const iduser = req.query.id_user
+        const new_taskname = req.body.new_name
+        const new_taskdate = req.body.new_date
 
-        const [ListTasks] = await poolconnect.execute(
-            'SELECT * FROM tasks WHERE who_task = ?', [iduser]
+        const [response] = await poolconnect.execute(
+            `UPDATE tasks
+            SET task_name = ?, task_date = ?
+            WHERE id_task = ?`, [new_taskname, new_taskdate, idtask]
         )
 
-        console.log(ListTasks)
-
-        results = {
-            message: 'Teste efetuado com sucesso',
-            code: 200
+        if (response.affectedRows > 0) {
+            if (response.changedRows == 0) {
+                results = {
+                    message: 'Informações inseridas são identicas as registradas, verifique as informações e tente novamente!',
+                    code: 200
+                }
+                return;
+            } else {
+                results = {
+                    message: 'Tarefa atualizada com sucesso',
+                    code: 200
+                }
+            }
+        } else {
+            results = {
+                message: 'Tarefa não encontrada, verifique as informações e tente novamente!',
+                code: 400
+            }
         }
     } catch (error) {
         results = {
-            message: `Esse foi o erro encontrado: ${error}`,
+            message: "Erro ao atualizar as informações da tarefa",
             code: 500
         }
+
+        console.log(`Esse foi o erro encontrado: ${error}`)
     }
 
     res.status(results.code).json(results)
 })
 
 tasks_routes.delete('/DeleteTask', async function (req, res) {
+    let results = {}
+
     try {
         const idtasks = req.query.id_task 
 
@@ -104,9 +131,11 @@ tasks_routes.delete('/DeleteTask', async function (req, res) {
         }
     } catch (error) {
         results = {
-            message: `Esse foi o erro encontrado: ${error}`,
+            message: "Erro ao deletar a tarefa!",
             code: 500
         }
+
+        console.log(`Esse foi o erro encontrado: ${error}`)
     }
 
     res.status(results.code).json(results)

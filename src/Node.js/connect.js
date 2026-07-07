@@ -9,7 +9,8 @@ function connect () {
         port: process.env.DB_PORT,
         user: process.env.DB_USER,
         waitForConnections: true,
-        connectionLimit: 10
+        connectionLimit: 10, 
+        foundRows: true
     })
 
     return DBConnect

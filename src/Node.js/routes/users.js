@@ -2,9 +2,10 @@ import express from 'express';
 import poolconnect from '../connect.js'
 
 const user_routes = express.Router()
-var results = {}
 
 user_routes.get('/Users', async function (req, res) {
+    let results = {}
+
     try {
         [results] = await poolconnect.execute(
             'SELECT * FROM users'
@@ -13,15 +14,19 @@ user_routes.get('/Users', async function (req, res) {
         res.status(200).json(results)
     } catch (error) {
         results = {
-            message: `Foi encontrado esse erro ${error}`,
+            message: `Erro ao mostrar os usuarios disponiveis! Por favor tente novamente`,
             code: 500
         }
 
-        res.status(results.code).send(results)
+        console.log(`Esse foi o erro encontrado: ${error}`)
+
+        res.status(results.code).json(results)
     }
 })
 
 user_routes.post('/RegisterUser', async function (req, res) {
+    let results = {}
+
     try {
         const nameuser = req.body.name
         const passworduser = req.body.password
@@ -41,15 +46,19 @@ user_routes.post('/RegisterUser', async function (req, res) {
         }
     } catch (error) {
          results = {
-            message: `Foi encontrado esse erro ${error}`,
+            message: 'Não foi possivel registrar esse usuario!',
             code: 500
-        }  
+        }
+        
+        console.log(`Esse foi o erro encontrado: ${error}`)
     }
 
     res.status(results.code).json(results)
 })
 
 user_routes.put('/UpdateUser', async function (req, res) {
+    let results = {}
+
     try {
         const attname = req.body.newname
         const attpassword = req.body.newpassword
@@ -70,15 +79,19 @@ user_routes.put('/UpdateUser', async function (req, res) {
         }
     } catch (error) {
         results = {
-            message: `foi encontrado esse erro na tentativa de atualizar o usuario ${error}`,
+            message: "Foi encontrado esse erro ao atualizar o usuario!",
             code: 500
         }
+
+        console.log(`Esse foi o erro encontrado: ${error}`)
     }
 
     res.status(results.code).json(results)
 })
 
 user_routes.delete('/DeleteUser', async function (req, res) {
+    let results = {}
+
     try {
         const iduser = req.query.id_user
 
@@ -99,7 +112,7 @@ user_routes.delete('/DeleteUser', async function (req, res) {
         }
     } catch (error) {
         results = {
-            message: `Esse foi erro encontrado ${error}`,
+            message: `Esse foi erro encontrado ${error.message}`,
             code: 500
         }
     }
