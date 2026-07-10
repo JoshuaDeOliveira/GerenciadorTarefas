@@ -81,13 +81,14 @@ tasks_routes.put('/UpdateTask', async function (req, res) {
             if (response.changedRows == 0) {
                 results = {
                     message: 'Informações inseridas são identicas as registradas, verifique as informações e tente novamente!',
-                    code: 200
+                    code: 200,
+                    altered: true
                 }
-                return;
             } else {
                 results = {
                     message: 'Tarefa atualizada com sucesso',
-                    code: 200
+                    code: 200,
+                    altered: false
                 }
             }
         } else {
