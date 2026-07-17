@@ -1,7 +1,7 @@
 import express from 'express';
-import tasks from './routes/tasks.js'
-import users from './routes/users.js'
-import logs from './routes/log.js'
+import tasks from './routes/tasksRoutes.js'
+import users from './routes/usersRoutes.js'
+import logs from './routes/logRoutes.js'
 import poolconnect from './connect.js'
 
 const webapp = express()

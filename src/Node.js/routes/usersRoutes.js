@@ -1,60 +1,11 @@
 import express from 'express';
-import poolconnect from '../connect.js'
+import { getUsers, RegisterUser } from '../controllers/usersController.js';
 
 const user_routes = express.Router()
 
-user_routes.get('/Users', async function (req, res) {
-    let results = {}
+user_routes.get('/Users', getUsers)
 
-    try {
-        [results] = await poolconnect.execute(
-            'SELECT * FROM users'
-        )
-
-        res.status(200).json(results)
-    } catch (error) {
-        results = {
-            message: `Erro ao mostrar os usuarios disponiveis! Por favor tente novamente`,
-            code: 500
-        }
-
-        console.log(`Esse foi o erro encontrado: ${error}`)
-
-        res.status(results.code).json(results)
-    }
-})
-
-user_routes.post('/RegisterUser', async function (req, res) {
-    let results = {}
-
-    try {
-        const nameuser = req.body.name
-        const passworduser = req.body.password
-        const emailuser = req.body.email
-
-        const [response] = await poolconnect.execute(
-            `INSERT INTO users(name_user, password_hash, email_user)
-            VALUES(?,?,?)`,
-            [nameuser, passworduser, emailuser]
-        )
-
-        if (response.affectedRows > 0) {
-            results = {
-                message: "Usuario cadastrado com sucesso",
-                code: 200
-            }
-        }
-    } catch (error) {
-         results = {
-            message: 'Não foi possivel registrar esse usuario!',
-            code: 500
-        }
-        
-        console.log(`Esse foi o erro encontrado: ${error}`)
-    }
-
-    res.status(results.code).json(results)
-})
+user_routes.post('/RegisterUser', RegisterUser)
 
 user_routes.put('/UpdateUser', async function (req, res) {
     let results = {}
