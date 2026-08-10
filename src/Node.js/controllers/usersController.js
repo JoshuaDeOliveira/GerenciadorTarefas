@@ -1,4 +1,4 @@
-import { findAllUsers, createUser } from "../repository/usersRepository.js";
+import { findAllUsers, createUser, attUser, eraseUser } from "../repository/usersRepository.js";
 
 export const getUsers = async (req, res) => {
     try {
@@ -31,4 +31,39 @@ export const RegisterUser = async (req, res) => {
         )
     }
     
+}
+
+export const UpdateUser = async (req, res) => {
+    try {
+        const attname = req.body.newname
+        const attpassword = req.body.newpassword
+        const attemail = req.body.newemail
+        const id_user = req.body.iduser
+
+        const response = await attUser(attname, attpassword, attemail, id_user)
+
+        res.status(200).json(response)
+    } catch (error) {
+        console.log(`Esse foi o erro encontrado apos tentar atualizar os usuarios: ${error}`)
+        res.status(400).json(
+            {
+                MessageError: "Erro ao tentar atualizar o usuario! Verifique os dados e tente novamente!"
+            }
+        )
+    }
+}
+
+export const DeleteUser = async (req, res) => {
+    try {
+        const iduser = req.query.id_user
+
+        const response = await eraseUser(iduser)
+
+        res.status(200).json(response)
+    } catch (error) {
+        console.log(`Esse foi o erro encontrado apos tentar deletar os usuarios: ${error}`)
+        res.status(400).json({
+            MessageError: 'Erro ao tentar deletar o usuario! Verifique os dados e tente novamente!'
+        })
+    }
 }
