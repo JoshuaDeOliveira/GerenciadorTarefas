@@ -1,8 +1,8 @@
-import { findAllTasks, createTask , deleteTask, updateTask} from "../repository/tasksReposity.js";
+import * as tasksRepository from "../repository/tasksRepository.js";
 
 export const getAllTasks = async (req, res) => {
     try {
-        const results = await findAllTasks()
+        const results = await tasksReposity.findAllTasks()
 
         res.status(200).json(results)
     } catch (error) {
@@ -21,7 +21,7 @@ export const RegisterTask = async (req, res) => {
         const task_name = req.body.task_name
         const task_date = req.body.task_date
 
-        const response = await createTask(email_user, task_name, task_date)
+        const response = await tasksRepository.createTask(email_user, task_name, task_date)
 
         res.status(200).json(response)
     } catch (error) {
@@ -37,7 +37,7 @@ export const RegisterTask = async (req, res) => {
 export const eraseTask = async (req, res) => {
     try {
         const idtasks = req.query.id_task
-        const response = await deleteTask(idtasks)
+        const response = await tasksRepository.deleteTask(idtasks)
 
         res.status(200).json(response)
     } catch (error) {
@@ -54,7 +54,7 @@ export const attTask = async (req, res) => {
         const new_taskname = req.body.new_name
         const new_taskdate = req.body.new_date
 
-        const response = await updateTask(idtask, new_taskname, new_taskdate)
+        const response = await tasksRepository.updateTask(idtask, new_taskname, new_taskdate)
 
         res.status(200).json(response)
     } catch (error) {

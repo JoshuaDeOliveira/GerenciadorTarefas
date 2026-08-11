@@ -1,8 +1,8 @@
-import { findAllUsers, createUser, attUser, eraseUser } from "../repository/usersRepository.js";
+import * as usersRepository  from "../repository/usersRepository.js";
 
 export const getUsers = async (req, res) => {
     try {
-        const response = await findAllUsers()
+        const response = await usersRepository.findAllUsers()
 
         res.status(200).json(response)
     } catch (error) {
@@ -19,7 +19,7 @@ export const RegisterUser = async (req, res) => {
         const passworduser = req.body.password
         const emailuser = req.body.email
 
-        const response = await createUser(nameuser, passworduser, emailuser)
+        const response = await usersRepository.createUser(nameuser, passworduser, emailuser)
 
         res.status(200).json(response)
     } catch (error) {
@@ -38,9 +38,9 @@ export const UpdateUser = async (req, res) => {
         const attname = req.body.newname
         const attpassword = req.body.newpassword
         const attemail = req.body.newemail
-        const id_user = req.body.iduser
+        const id_user = req.query.id_user
 
-        const response = await attUser(attname, attpassword, attemail, id_user)
+        const response = await usersRepository.attUser(attname, attpassword, attemail, id_user)
 
         res.status(200).json(response)
     } catch (error) {
@@ -57,7 +57,7 @@ export const DeleteUser = async (req, res) => {
     try {
         const iduser = req.query.id_user
 
-        const response = await eraseUser(iduser)
+        const response = await usersRepository.eraseUser(iduser)
 
         res.status(200).json(response)
     } catch (error) {

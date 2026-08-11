@@ -34,13 +34,12 @@ export const createUser = async (nameuser, passworduser, emailuser) => {
     }
 }
 
-
 export const attUser = async (attname, attpassword, attemail, id_user) => {
     try {
         const [response] = await poolconnect.execute(
             `UPDATE users
             SET name_user = ?, password_hash = ?, email_user = ?
-            WHERE id`, [attname, attpassword, attemail, id_user]
+            WHERE id_user = ?`, [attname, attpassword, attemail, id_user]
         )
 
         if (response.affectedRows === 0) {

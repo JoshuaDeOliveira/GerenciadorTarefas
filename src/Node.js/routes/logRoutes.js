@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllLogs } from '../controllers/logController.js';
+import {getAllLogs} from '../controllers/logController.js';
 
 const log_route = express.Router()
 
